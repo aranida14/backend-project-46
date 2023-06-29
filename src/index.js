@@ -4,13 +4,10 @@ import * as path from 'node:path';
 
 export default (filepath1, filepath2) => {
   const format = path.extname(filepath1);
-  console.log('format: ' + format);
   if (format !== '.json') return '';
 
-  // const fileContent1 = fs.readFileSync(filepath1);
   const fileObject1 = JSON.parse(fs.readFileSync(filepath1));
 
-  // const fileContent2 = fs.readFileSync(filepath2);
   const fileObject2 = JSON.parse(fs.readFileSync(filepath2));
 
   const keys = _.sortBy(_.union(Object.keys(fileObject1), Object.keys(fileObject2)));
@@ -29,6 +26,5 @@ export default (filepath1, filepath2) => {
   }
   diff = `${diff}\n}`;
 
-  // let result = `${filepath1}:\n${fileContent1}\n${filepath2}:\n${fileContent2}`;
   return diff;
 };
