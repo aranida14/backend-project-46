@@ -12,7 +12,7 @@ export default (filepath1, filepath2) => {
 
   const keys = _.sortBy(_.union(Object.keys(fileObject1), Object.keys(fileObject2)));
   let diff = '{';
-  for (const key of keys) {
+  keys.forEach((key) => {
     if (!Object.hasOwn(fileObject1, key)) {
       diff = `${diff}\n  + ${key}: ${fileObject2[key]}`;
     } else if (!Object.hasOwn(fileObject2, key)) {
@@ -23,7 +23,7 @@ export default (filepath1, filepath2) => {
       diff = `${diff}\n  - ${key}: ${fileObject1[key]}`;
       diff = `${diff}\n  + ${key}: ${fileObject2[key]}`;
     }
-  }
+  });
   diff = `${diff}\n}`;
 
   return diff;
