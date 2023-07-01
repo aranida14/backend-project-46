@@ -1,14 +1,9 @@
 import _ from 'lodash';
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import getFileObject from './parsers.js';
 
 export default (filepath1, filepath2) => {
-  const format = path.extname(filepath1);
-  if (format !== '.json') return '';
-
-  const fileObject1 = JSON.parse(fs.readFileSync(filepath1));
-
-  const fileObject2 = JSON.parse(fs.readFileSync(filepath2));
+  const fileObject1 = getFileObject(filepath1);
+  const fileObject2 = getFileObject(filepath2);
 
   const keys = _.sortBy(_.union(Object.keys(fileObject1), Object.keys(fileObject2)));
   let diff = '{';

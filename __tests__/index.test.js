@@ -19,3 +19,7 @@ beforeAll(() => {
 test('json diff', () => {
   expect(genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'))).toEqual(expectedResult);
 });
+
+test('yaml diff', () => {
+  expect(genDiff(getFixturePath('file1.yml'), getFixturePath('file2.yml'))).toEqual(expectedResult);
+});
