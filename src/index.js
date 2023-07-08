@@ -1,13 +1,22 @@
 import _ from 'lodash';
 import getFileObject from './parsers.js';
 import stylish from './formatters/stylish.js';
+import plain from './formatters/plain.js';
 
 const isObject = (value) => typeof value === 'object' && value !== null;
 const formattersMap = {
   stylish,
+  plain,
 };
 
-export default (filepath1, filepath2, format = 'stylish') => {
+const getFormatter = (formatName) => {
+  if (!formattersMap[formatName]) {
+    throw new Error(`Unknown format name: ${formatName}`);
+  }
+  return formattersMap[formatName];
+};
+
+export default (filepath1, filepath2, formatName = 'stylish') => {
   const fileObject1 = getFileObject(filepath1);
   const fileObject2 = getFileObject(filepath2);
 
@@ -24,7 +33,7 @@ export default (filepath1, filepath2, format = 'stylish') => {
           };
         } else if (!Object.hasOwn(obj2, key)) {
           singleDiff = {
-            ...singleDiff, type: 'plain', status: 'deleted', oldValue: obj1[key],
+            ...singleDiff, type: 'plain', status: 'removed', oldValue: obj1[key],
           };
         } else if (isObject(obj1[key]) && isObject(obj2[key])) {
           singleDiff = { ...singleDiff, type: 'complex', children: iter(obj1[key], obj2[key]) };
@@ -34,7 +43,7 @@ export default (filepath1, filepath2, format = 'stylish') => {
           };
         } else {
           singleDiff = {
-            ...singleDiff, type: 'plain', status: 'changed', oldValue: obj1[key], newValue: obj2[key],
+            ...singleDiff, type: 'plain', status: 'updated', oldValue: obj1[key], newValue: obj2[key],
           };
         }
         return singleDiff;
@@ -43,5 +52,5 @@ export default (filepath1, filepath2, format = 'stylish') => {
     return diffArray;
   };
 
-  return formattersMap[format](iter(fileObject1, fileObject2));
+  return getFormatter(formatName)(iter(fileObject1, fileObject2));
 };

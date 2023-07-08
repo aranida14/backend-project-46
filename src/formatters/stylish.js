@@ -19,7 +19,7 @@ const stylish = (diff) => {
             case 'unchanged':
               line = `${indent}  ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`;
               break;
-            case 'changed':
+            case 'updated':
               line = [];
               line.push(`${indent}- ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`);
               line.push(`${indent}+ ${name}: ${stringify(newValue, replacer, spacesPerLevel, nestedIndent)}`);
@@ -27,7 +27,7 @@ const stylish = (diff) => {
             case 'added':
               line = `${indent}+ ${name}: ${stringify(newValue, replacer, spacesPerLevel, nestedIndent)}`;
               break;
-            case 'deleted':
+            case 'removed':
               line = `${indent}- ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`;
               break;
             default:
