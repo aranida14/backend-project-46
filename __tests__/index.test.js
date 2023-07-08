@@ -13,13 +13,13 @@ const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8'
 let expectedResult;
 
 beforeAll(() => {
-  expectedResult = readFile('expected_result.txt');
+  expectedResult = readFile('expectedResultStylish.txt');
 });
 
-test('json diff', () => {
+test('json nested diff', () => {
   expect(genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'))).toEqual(expectedResult);
 });
 
-test('yaml diff', () => {
+test('yaml nested diff', () => {
   expect(genDiff(getFixturePath('file1.yml'), getFixturePath('file2.yml'))).toEqual(expectedResult);
 });
