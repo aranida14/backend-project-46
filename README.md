@@ -8,3 +8,5 @@
 [![asciicast](https://asciinema.org/a/aG5fLP8d6vAbK7wVyo23ZLDmE.svg)](https://asciinema.org/a/aG5fLP8d6vAbK7wVyo23ZLDmE)
 #### Сравнение плоских yaml-файлов
 [![asciicast](https://asciinema.org/a/5qZOR0dEm1wYMBLErSzf6lJ91.svg)](https://asciinema.org/a/5qZOR0dEm1wYMBLErSzf6lJ91)
+#### Сравнение вложенных структур
+[![asciicast](https://asciinema.org/a/GBbd4nzvJVN2zJ8CfUHs5KUxj.svg)](https://asciinema.org/a/GBbd4nzvJVN2zJ8CfUHs5KUxj)
