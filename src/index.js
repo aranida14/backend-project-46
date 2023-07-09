@@ -2,11 +2,13 @@ import _ from 'lodash';
 import getFileObject from './parsers.js';
 import stylish from './formatters/stylish.js';
 import plain from './formatters/plain.js';
+import json from './formatters/json.js';
 
 const isObject = (value) => typeof value === 'object' && value !== null;
 const formattersMap = {
   stylish,
   plain,
+  json,
 };
 
 const getFormatter = (formatName) => {

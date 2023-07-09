@@ -12,3 +12,5 @@
 [![asciicast](https://asciinema.org/a/GBbd4nzvJVN2zJ8CfUHs5KUxj.svg)](https://asciinema.org/a/GBbd4nzvJVN2zJ8CfUHs5KUxj)
 #### Сравнение вложенных структур в плоском формате
 [![asciicast](https://asciinema.org/a/R4F4ybme7Eq0EbmJAPhGI1UJP.svg)](https://asciinema.org/a/R4F4ybme7Eq0EbmJAPhGI1UJP)
+#### Сравнение вложенных структур в формате json
+[![asciicast](https://asciinema.org/a/yBglEDBYfiIFADATReWMzBWe2.svg)](https://asciinema.org/a/yBglEDBYfiIFADATReWMzBWe2)
