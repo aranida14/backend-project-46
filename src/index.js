@@ -26,29 +26,29 @@ export default (filepath1, filepath2, formatName = 'stylish') => {
     const keys = _.sortBy(_.union(Object.keys(obj1), Object.keys(obj2)));
     const diffArray = keys
       .map((key) => {
-        let singleDiff = {
-          name: key,
-        };
         if (!Object.hasOwn(obj1, key)) {
-          singleDiff = {
-            ...singleDiff, type: 'plain', status: 'added', newValue: obj2[key],
-          };
-        } else if (!Object.hasOwn(obj2, key)) {
-          singleDiff = {
-            ...singleDiff, type: 'plain', status: 'removed', oldValue: obj1[key],
-          };
-        } else if (isObject(obj1[key]) && isObject(obj2[key])) {
-          singleDiff = { ...singleDiff, type: 'complex', children: iter(obj1[key], obj2[key]) };
-        } else if (obj1[key] === obj2[key]) {
-          singleDiff = {
-            ...singleDiff, type: 'plain', status: 'unchanged', oldValue: obj1[key], newValue: obj2[key],
-          };
-        } else {
-          singleDiff = {
-            ...singleDiff, type: 'plain', status: 'updated', oldValue: obj1[key], newValue: obj2[key],
+          return {
+            name: key, type: 'plain', status: 'added', newValue: obj2[key],
           };
         }
-        return singleDiff;
+        if (!Object.hasOwn(obj2, key)) {
+          return {
+            name: key, type: 'plain', status: 'removed', oldValue: obj1[key],
+          };
+        }
+        if (isObject(obj1[key]) && isObject(obj2[key])) {
+          return {
+            name: key, type: 'complex', children: iter(obj1[key], obj2[key]),
+          };
+        }
+        if (obj1[key] === obj2[key]) {
+          return {
+            name: key, type: 'plain', status: 'unchanged', oldValue: obj1[key], newValue: obj2[key],
+          };
+        }
+        return {
+          name: key, type: 'plain', status: 'updated', oldValue: obj1[key], newValue: obj2[key],
+        };
       });
 
     return diffArray;

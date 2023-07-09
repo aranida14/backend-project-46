@@ -13,30 +13,24 @@ const stylish = (diff) => {
         const {
           name, type, status, oldValue, newValue, children,
         } = item;
-        let line;
         if (type === 'plain') {
           switch (status) {
             case 'unchanged':
-              line = `${indent}  ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`;
-              break;
+              return `${indent}  ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`;
             case 'updated':
-              line = [];
-              line.push(`${indent}- ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`);
-              line.push(`${indent}+ ${name}: ${stringify(newValue, replacer, spacesPerLevel, nestedIndent)}`);
-              break;
+              return [
+                `${indent}- ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`,
+                `${indent}+ ${name}: ${stringify(newValue, replacer, spacesPerLevel, nestedIndent)}`,
+              ];
             case 'added':
-              line = `${indent}+ ${name}: ${stringify(newValue, replacer, spacesPerLevel, nestedIndent)}`;
-              break;
+              return `${indent}+ ${name}: ${stringify(newValue, replacer, spacesPerLevel, nestedIndent)}`;
             case 'removed':
-              line = `${indent}- ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`;
-              break;
+              return `${indent}- ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`;
             default:
               throw new Error(`Unknown status ${status}`);
           }
-        } else {
-          line = `${indent}  ${name}: ${iter(children, depth + 1)}`;
         }
-        return line;
+        return `${indent}  ${name}: ${iter(children, depth + 1)}`;
       });
     return [
       '{',
