@@ -1,58 +1,16 @@
-import _ from 'lodash';
+import fs from 'node:fs';
+import path from 'node:path';
 import getFileObject from './parsers.js';
-import stylish from './formatters/stylish.js';
-import plain from './formatters/plain.js';
-import json from './formatters/json.js';
-
-const isObject = (value) => typeof value === 'object' && value !== null;
-const formattersMap = {
-  stylish,
-  plain,
-  json,
-};
-
-const getFormatter = (formatName) => {
-  if (!formattersMap[formatName]) {
-    throw new Error(`Unknown format name: ${formatName}`);
-  }
-  return formattersMap[formatName];
-};
+import buildTree from './diff-tree.js';
+import getFormatter from './formatters/index.js';
 
 export default (filepath1, filepath2, formatName = 'stylish') => {
-  const fileObject1 = getFileObject(filepath1);
-  const fileObject2 = getFileObject(filepath2);
+  const filedata1 = fs.readFileSync(filepath1);
+  const filedata2 = fs.readFileSync(filepath2);
+  const fileFormat1 = path.extname(filepath1).slice(1);
+  const fileFormat2 = path.extname(filepath2).slice(1);
 
-  const iter = (obj1, obj2) => {
-    const keys = _.sortBy(_.union(Object.keys(obj1), Object.keys(obj2)));
-    const diffArray = keys
-      .map((key) => {
-        if (!Object.hasOwn(obj1, key)) {
-          return {
-            name: key, type: 'plain', status: 'added', newValue: obj2[key],
-          };
-        }
-        if (!Object.hasOwn(obj2, key)) {
-          return {
-            name: key, type: 'plain', status: 'removed', oldValue: obj1[key],
-          };
-        }
-        if (isObject(obj1[key]) && isObject(obj2[key])) {
-          return {
-            name: key, type: 'complex', children: iter(obj1[key], obj2[key]),
-          };
-        }
-        if (obj1[key] === obj2[key]) {
-          return {
-            name: key, type: 'plain', status: 'unchanged', oldValue: obj1[key], newValue: obj2[key],
-          };
-        }
-        return {
-          name: key, type: 'plain', status: 'updated', oldValue: obj1[key], newValue: obj2[key],
-        };
-      });
-
-    return diffArray;
-  };
-
-  return getFormatter(formatName)(iter(fileObject1, fileObject2));
+  const fileObject1 = getFileObject(filedata1, fileFormat1);
+  const fileObject2 = getFileObject(filedata2, fileFormat2);
+  return getFormatter(formatName)(buildTree(fileObject1, fileObject2));
 };

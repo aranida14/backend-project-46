@@ -1,17 +1,12 @@
-import fs from 'node:fs';
-import path from 'node:path';
 import yaml from 'js-yaml';
 
-export const isJSONExt = (filepath) => path.extname(filepath) === '.json';
-export const isYamlExt = (filepath) => (path.extname(filepath) === '.yaml' || path.extname(filepath) === '.yml');
-
-const getFileObject = (filepath) => {
-  if (isJSONExt(filepath)) {
-    return JSON.parse(fs.readFileSync(filepath));
+const getFileObject = (filedata, format) => {
+  if (format === 'json') {
+    return JSON.parse(filedata);
   }
-  if (isYamlExt(filepath)) {
-    return yaml.load(fs.readFileSync(filepath));
+  if (format === 'yaml' || format === 'yml') {
+    return yaml.load(filedata);
   }
-  throw new Error(`File with unknown extention: ${filepath}`);
+  throw new Error(`Unknown file format ${format}`);
 };
 export default getFileObject;

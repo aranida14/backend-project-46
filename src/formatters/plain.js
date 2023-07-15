@@ -1,6 +1,7 @@
-const isComplex = (value) => typeof value === 'object' && value !== null;
+import _ from 'lodash';
+
 const stringifyPlain = (value) => {
-  if (isComplex(value)) {
+  if (_.isObject(value)) {
     return '[complex value]';
   }
   if (typeof value === 'string') {
