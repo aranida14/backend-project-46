@@ -1,11 +1,10 @@
 import stylish from './stylish.js';
 import plain from './plain.js';
-import json from './json.js';
 
 const formattersMap = {
   stylish,
   plain,
-  json,
+  json: JSON.stringify,
 };
 
 const getFormatter = (formatName) => {
