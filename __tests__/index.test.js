@@ -1,6 +1,3 @@
-/* eslint-disable fp/no-let */
-/* eslint-disable fp/no-mutation */
-
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'url';
