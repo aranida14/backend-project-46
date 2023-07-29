@@ -10,24 +10,6 @@ const stringifyPlain = (value) => {
   return value;
 };
 
-const filterChanged = (diff) => {
-  const filtered = diff
-    .map((node) => {
-      if (node.type === 'complex') {
-        return { ...node, children: filterChanged(node.children) };
-      }
-      return node;
-    })
-    .filter((node) => {
-      const { type, status, children } = node;
-      if (type === 'plain') {
-        return status === 'updated' || status === 'added' || status === 'removed';
-      }
-      return (children && children.length > 0);
-    });
-  return filtered;
-};
-
 const plain = (diff) => {
   const iter = (currentDiff, ancestry) => {
     const lines = currentDiff
@@ -47,6 +29,8 @@ const plain = (diff) => {
               return `Property '${newAncestry.join('.')}' was ${status} with value: ${stringifiedNew}`;
             case 'removed':
               return `Property '${newAncestry.join('.')}' was ${status}`;
+            case 'unchanged':
+              return [];
             default:
               throw new Error(`Incorrect status ${status}`);
           }
@@ -55,7 +39,7 @@ const plain = (diff) => {
       });
     return lines.join('\n');
   };
-  return iter(filterChanged(diff), []);
+  return iter(diff, []);
 };
 
 export default plain;
