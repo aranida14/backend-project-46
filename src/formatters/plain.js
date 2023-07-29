@@ -14,24 +14,20 @@ const plain = (diff) => {
   const iter = (currentDiff, ancestry) => {
     const lines = currentDiff
       .flatMap((item) => {
-        const {
-          name, status, oldValue, newValue, children,
-        } = item;
-        const stringifiedOld = stringifyPlain(oldValue);
-        const stringifiedNew = stringifyPlain(newValue);
+        const { name, status } = item;
         const newAncestry = [...ancestry, name];
 
         switch (status) {
           case 'changed':
-            return `Property '${newAncestry.join('.')}' was updated. From ${stringifiedOld} to ${stringifiedNew}`;
+            return `Property '${newAncestry.join('.')}' was updated. From ${stringifyPlain(item.oldValue)} to ${stringifyPlain(item.newValue)}`;
           case 'added':
-            return `Property '${newAncestry.join('.')}' was ${status} with value: ${stringifiedNew}`;
+            return `Property '${newAncestry.join('.')}' was added with value: ${stringifyPlain(item.newValue)}`;
           case 'removed':
-            return `Property '${newAncestry.join('.')}' was ${status}`;
+            return `Property '${newAncestry.join('.')}' was removed`;
           case 'unchanged':
             return [];
           case 'complex':
-            return `${iter(children, newAncestry)}`;
+            return `${iter(item.children, newAncestry)}`;
           default:
             throw new Error(`Incorrect status ${status}`);
         }
