@@ -15,27 +15,26 @@ const plain = (diff) => {
     const lines = currentDiff
       .flatMap((item) => {
         const {
-          name, type, status, oldValue, newValue, children,
+          name, status, oldValue, newValue, children,
         } = item;
         const stringifiedOld = stringifyPlain(oldValue);
         const stringifiedNew = stringifyPlain(newValue);
         const newAncestry = [...ancestry, name];
 
-        if (type === 'plain') {
-          switch (status) {
-            case 'updated':
-              return `Property '${newAncestry.join('.')}' was ${status}. From ${stringifiedOld} to ${stringifiedNew}`;
-            case 'added':
-              return `Property '${newAncestry.join('.')}' was ${status} with value: ${stringifiedNew}`;
-            case 'removed':
-              return `Property '${newAncestry.join('.')}' was ${status}`;
-            case 'unchanged':
-              return [];
-            default:
-              throw new Error(`Incorrect status ${status}`);
-          }
+        switch (status) {
+          case 'changed':
+            return `Property '${newAncestry.join('.')}' was updated. From ${stringifiedOld} to ${stringifiedNew}`;
+          case 'added':
+            return `Property '${newAncestry.join('.')}' was ${status} with value: ${stringifiedNew}`;
+          case 'removed':
+            return `Property '${newAncestry.join('.')}' was ${status}`;
+          case 'unchanged':
+            return [];
+          case 'complex':
+            return `${iter(children, newAncestry)}`;
+          default:
+            throw new Error(`Incorrect status ${status}`);
         }
-        return `${iter(children, newAncestry)}`;
       });
     return lines.join('\n');
   };

@@ -11,26 +11,26 @@ const stylish = (diff) => {
     const lines = currentDiff
       .flatMap((item) => {
         const {
-          name, type, status, oldValue, newValue, children,
+          name, status, oldValue, newValue, children,
         } = item;
-        if (type === 'plain') {
-          switch (status) {
-            case 'unchanged':
-              return `${indent}  ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`;
-            case 'updated':
-              return [
-                `${indent}- ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`,
-                `${indent}+ ${name}: ${stringify(newValue, replacer, spacesPerLevel, nestedIndent)}`,
-              ];
-            case 'added':
-              return `${indent}+ ${name}: ${stringify(newValue, replacer, spacesPerLevel, nestedIndent)}`;
-            case 'removed':
-              return `${indent}- ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`;
-            default:
-              throw new Error(`Unknown status ${status}`);
-          }
+
+        switch (status) {
+          case 'unchanged':
+            return `${indent}  ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`;
+          case 'changed':
+            return [
+              `${indent}- ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`,
+              `${indent}+ ${name}: ${stringify(newValue, replacer, spacesPerLevel, nestedIndent)}`,
+            ];
+          case 'added':
+            return `${indent}+ ${name}: ${stringify(newValue, replacer, spacesPerLevel, nestedIndent)}`;
+          case 'removed':
+            return `${indent}- ${name}: ${stringify(oldValue, replacer, spacesPerLevel, nestedIndent)}`;
+          case 'complex':
+            return `${indent}  ${name}: ${iter(children, depth + 1)}`;
+          default:
+            throw new Error(`Unknown status ${status}`);
         }
-        return `${indent}  ${name}: ${iter(children, depth + 1)}`;
       });
     return [
       '{',
